@@ -5,6 +5,7 @@ from datetime import datetime
 from sentry_sdk.utils import (
     AnnotatedValue,
     capture_internal_exception,
+    capture_internal_exceptions,
     disable_capture_event,
     safe_repr,
     strip_string,
@@ -92,8 +93,8 @@ class Memo(object):
         self._ids.pop(id(self._objs.pop()), None)
 
 
-def serialize(event, **kwargs):
-    # type: (Event, **Any) -> Event
+def serialize(event, before_serialize_node=None, **kwargs):
+    # type: (Event, Optional[NodeSerializeProcessor], **Any) -> Event
     memo = Memo()
     path = []  # type: List[Segment]
     meta_stack = []  # type: List[Dict[str, Any]]
@@ -189,6 +190,10 @@ def serialize(event, **kwargs):
         # type: (...) -> Any
         if segment is not None:
             path.append(segment)
+
+        if before_serialize_node is not None:
+            with capture_internal_exceptions():
+                obj = before_serialize_node(obj)
 
         try:
             with memo.memoize(obj) as result:

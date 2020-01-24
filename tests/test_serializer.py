@@ -66,3 +66,11 @@ def test_bytes_serialization_repr(message_normalizer):
     binary = b"abc123\x80\xf0\x9f\x8d\x95"
     result = message_normalizer(binary, should_repr_strings=True)
     assert result == r"b'abc123\x80\xf0\x9f\x8d\x95'"
+
+def test_before_serialize_node():
+    def f(o):
+        if not isinstance(o, list):
+            return o
+        return "[!]"
+    assert serialize({"a": {"b": []}}, before_serialize_node = f)["a"]["b"] == "[!]"
+    assert serialize({"a": {"b": []}}, before_serialize_node = None)["a"]["b"] == []

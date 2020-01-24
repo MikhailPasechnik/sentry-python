@@ -42,6 +42,7 @@ class ClientConstructor(object):
         request_bodies="medium",  # type: str
         before_send=None,  # type: Optional[EventProcessor]
         before_breadcrumb=None,  # type: Optional[BreadcrumbProcessor]
+        before_serialize_node=None,  # type: Optional[NodeSerializeProcessor]
         debug=False,  # type: bool
         attach_stacktrace=False,  # type: bool
         ca_certs=None,  # type: Optional[str]

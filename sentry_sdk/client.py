@@ -172,7 +172,10 @@ class _Client(object):
         # Postprocess the event here so that annotated types do
         # generally not surface in before_send
         if event is not None:
-            event = serialize(event)
+            event = serialize(
+                event,
+                before_serialize_node=self.options["before_serialize_node"],
+            )
 
         before_send = self.options["before_send"]
         if before_send is not None:

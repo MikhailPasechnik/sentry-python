@@ -26,6 +26,7 @@ if MYPY:
     EventProcessor = Callable[[Event, Hint], Optional[Event]]
     ErrorProcessor = Callable[[Event, ExcInfo], Optional[Event]]
     BreadcrumbProcessor = Callable[[Breadcrumb, BreadcrumbHint], Optional[Breadcrumb]]
+    NodeSerializeProcessor = Callable[[Any], Optional[Any]]
 
     # https://github.com/python/mypy/issues/5710
     NotImplementedType = Any
